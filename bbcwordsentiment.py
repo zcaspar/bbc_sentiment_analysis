@@ -1,22 +1,25 @@
-
-# coding: utf-8
-
-# In[429]:
-
+import spacy# Load the language 
+nlp = spacy.load('en_core_web_lg')
 
 from bs4 import BeautifulSoup
 import requests
-import re
 
+# Use this to compare how long code takes
 
-# In[430]:
+def time_execution(code):
+    start = time.clock()
+    code_part = eval('code')
+    stop = time.clock()
+    run_time = stop - start
+    return run_time
 
+# A container for Spacy to analyse sentiment
+sentiment_words = []
+
+# Word identified that I don't want to be included
+stop_words = []
 
 a = 'https://www.bbc.co.uk/'
-
-
-# In[ ]:
-
 
 def get_page(page_address):
     page = requests.get(a)
@@ -24,91 +27,45 @@ def get_page(page_address):
     soup = BeautifulSoup(page.text, 'html.parser')
     return soup
 
-
-# In[432]:
-
-
-soup = get_page(a)
-
-
-# In[640]:
-
-
-print(soup.h3.find('span',class_='top-story__title').text) #Prints the first top story
-
-
-# In[691]:
-
-
 def get_headlines(soup):
     all_headlines = (soup.find_all('h3'))
     return all_headlines
 
+# Get full page html
 
-# In[692]:
+soup = get_page(a)
 
+# Get the headlines including html tags
 
 all_headlines = get_headlines(soup)
 
+# Get just a list of headline strings
 
-# In[642]:
-
-
-word_list = []
+headline_list = []
 for i in all_headlines:
-    word_list.append(i.text)
+    headline_list.append(i.text)
 
+# Remove stop words and punctuation and put remaining words in sentiment_words
 
-# In[643]:
+for headline in headline_list:
+    doc = nlp(headline)
+    sentiment_words.append([token.lemma_ for token in doc if not token.is_stop if not token.lemma_ in stop_words if token.is_punct == False])
 
+# Create a large list for all words in all headlines
+all_words = [] # e.f. ['virus', 'update', 'UK', 'world', 'live']
 
-indiv_word_lists = []
-for i in word_list:
-    indiv_word_lists.append(i.split())
+# Now populate this list
+for headline in sentiment_words:
+    for word in headline:
+        all_words.append(word)
 
-
-# In[694]:
-
-
-individual_words = []
-for i in indiv_word_lists:
-    for word in i:
-        individual_words.append(word)
-
-
-# In[646]:
-
-
-unique_words = set(individual_words)
-
-
-# In[701]:
-
-
-dict_file = 'senticnet.xml'
-
-
-# In[702]:
-
-
+# Define a dictionary file with word sentiments
 import xml.etree.ElementTree as ET
 import pprint
 
-
-# In[703]:
-
-
+dict_file = '/home/caspar/Coding/docs/wordsentiment/senticnet.xml'
 tree = ET.parse(dict_file)
-
-
-# In[704]:
-
-
 root = tree.getroot()
-
-
-# In[705]:
-
 
 i = 0
 data=[] # Data holds a tuple of the word and then its score
@@ -116,38 +73,26 @@ while i < len(root):
     data.append((root[i][1].text,root[i][2].text))
     i+=1
 
-
-# In[706]:
-
-
 data_list = list(data)
 # data_list contains ('word,'0.1') this is the one with the score
 # unique_words ('word','word') this is taken from the bbc
 
+### Convert data_list to a dictionary
 
-# In[596]:
+polarity_dictionary = {}
 
+for i in data_list:
+    key_word = i[0]
+    polarity_value = i[1]
+    polarity_dictionary[key_word] = float(polarity_value)
 
-#for i in data_list:
-    #print('December' in i)
+score_dict = [] # Has all the bbc words and scores in the format [('Saturday', 0.935),('abuse', -0.684)]
+zero_words = [] # Has all the words without a polarity rating as a list of strings ['virus','update','UK']
 
-
-# In[690]:
-
-
-score_dict = [] # Has all the bbc words and scores in it, eventually including the zero words
-zero_words = []
-for i in data_list: # i is the word in the score dictionary
-    for ii in unique_words:
-        bbc_word = ii
-        if bbc_word in i:
-            score_dict.append((bbc_word,float(i[1])))
-        else:
-            zero_words.append(bbc_word)
-total_value_dict = []
-for i in zero_words:
-    score_dict.append((i,0))
-for i in score_dict:
-    total_value_dict.append(i[1])
-print(sum(total_value_dict)/len(total_value_dict)*10000000)
-
+for bbc_word in all_words:
+    if bbc_word in polarity_dictionary:
+        score_dict.append(polarity_dictionary[bbc_word])
+    else:
+        zero_words.append(bbc_word)
+   
+print(sum(score_dict)/len(score_dict))
