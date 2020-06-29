@@ -3,6 +3,7 @@ nlp = spacy.load('en_core_web_lg')
 
 from bs4 import BeautifulSoup
 import requests
+import json
 
 # Use this to compare how long code takes
 
@@ -94,5 +95,21 @@ for bbc_word in all_words:
         score_dict.append(polarity_dictionary[bbc_word])
     else:
         zero_words.append(bbc_word)
+
+	# Takes a python dictionary and turns it into a json file
+
+def dict_to_json(dict,file_name):
+    # dict should be a python dictionary and file_name in the format "my_file.json",
+    # which will be created when function is run.
+    a_file = open(file_name, "w")
+    json.dump(dict, a_file, sort_keys=True, indent=4, separators=(',', ': '))
+    a_file.close()
+
+# Takes a json file and turns it into a pythong dictionary
+
+def json_to_dic(file_name):
+    with open('try_it.json', 'r') as f:
+        this_dict = json.load(f)
+    return this_dict
    
 print(sum(score_dict)/len(score_dict))
