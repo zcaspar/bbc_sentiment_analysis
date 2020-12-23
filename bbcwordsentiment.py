@@ -1,5 +1,8 @@
-import spacy# Load the language 
-nlp = spacy.load('en_core_web_lg')
+import spacy #Load the language
+# Install bs4: sudo apt-get install python3-bs4
+nlp = spacy.load('en_core_web_lg') # Use the following to install from command line: python3 -m spacy download en_core_web_lg
+# Change the below to the location of the dictionary file
+dict_file = '/home/caspar/Documents/Data Science/bbc_sentiment_analysis/senticnet.xml'
 
 from bs4 import BeautifulSoup
 import requests
@@ -20,7 +23,7 @@ sentiment_words = []
 # Word identified that I don't want to be included
 stop_words = []
 
-a = 'https://www.bbc.co.uk/'
+a = 'https://www.bbc.co.uk/news'
 
 def get_page(page_address):
     page = requests.get(a)
@@ -29,8 +32,9 @@ def get_page(page_address):
     return soup
 
 def get_headlines(soup):
-    all_headlines = (soup.find_all('h3'))
+    all_headlines = soup.find_all(['h1','h2','h3','h4','h5'])
     return all_headlines
+
 
 # Get full page html
 
@@ -45,6 +49,7 @@ all_headlines = get_headlines(soup)
 headline_list = []
 for i in all_headlines:
     headline_list.append(i.text)
+
 
 # Remove stop words and punctuation and put remaining words in sentiment_words
 
@@ -64,7 +69,6 @@ for headline in sentiment_words:
 import xml.etree.ElementTree as ET
 import pprint
 
-dict_file = '/home/caspar/Coding/docs/wordsentiment/senticnet.xml'
 tree = ET.parse(dict_file)
 root = tree.getroot()
 
@@ -96,7 +100,7 @@ for bbc_word in all_words:
     else:
         zero_words.append(bbc_word)
 
-	# Takes a python dictionary and turns it into a json file
+    # Takes a python dictionary and turns it into a json file
 
 def dict_to_json(dict,file_name):
     # dict should be a python dictionary and file_name in the format "my_file.json",
@@ -112,4 +116,6 @@ def json_to_dic(file_name):
         this_dict = json.load(f)
     return this_dict
    
-print(sum(score_dict)/len(score_dict))
+result = round((sum(score_dict)/len(score_dict)*10),2)
+
+print(result)
