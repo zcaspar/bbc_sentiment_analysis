@@ -1627,12 +1627,6 @@
 		<polarity xmlns="http://sentic.net/api/" rdf:datatype="http://www.w3.org/2001/XMLSchema#float">-0.838</polarity>
 	</rdf:Description>
 
-	<rdf:Description rdf:about="http://openmind.media.mit.edu/api/en/concept/as">
-		<rdf:type rdf:resource="http://sentic.net/api/concept"/>
-		<text xmlns="http://sentic.net/api/">as</text>
-		<polarity xmlns="http://sentic.net/api/" rdf:datatype="http://www.w3.org/2001/XMLSchema#float">+0.376</polarity>
-	</rdf:Description>
-
 	<rdf:Description rdf:about="http://openmind.media.mit.edu/api/en/concept/asbestos">
 		<rdf:type rdf:resource="http://sentic.net/api/concept"/>
 		<text xmlns="http://sentic.net/api/">asbestos</text>
@@ -6391,12 +6385,6 @@
 		<polarity xmlns="http://sentic.net/api/" rdf:datatype="http://www.w3.org/2001/XMLSchema#float">-0.529</polarity>
 	</rdf:Description>
 
-	<rdf:Description rdf:about="http://openmind.media.mit.edu/api/en/concept/content">
-		<rdf:type rdf:resource="http://sentic.net/api/concept"/>
-		<text xmlns="http://sentic.net/api/">content</text>
-		<polarity xmlns="http://sentic.net/api/" rdf:datatype="http://www.w3.org/2001/XMLSchema#float">+0.264</polarity>
-	</rdf:Description>
-
 	<rdf:Description rdf:about="http://openmind.media.mit.edu/api/en/concept/contented">
 		<rdf:type rdf:resource="http://sentic.net/api/concept"/>
 		<text xmlns="http://sentic.net/api/">contented</text>
@@ -6659,6 +6647,18 @@
 		<rdf:type rdf:resource="http://sentic.net/api/concept"/>
 		<text xmlns="http://sentic.net/api/">covetousness</text>
 		<polarity xmlns="http://sentic.net/api/" rdf:datatype="http://www.w3.org/2001/XMLSchema#float">-0.279</polarity>
+	</rdf:Description>
+
+	<rdf:Description rdf:about="">
+		<rdf:type rdf:resource="Human Input"/>
+		<text xmlns="">covid</text>
+		<polarity xmlns="" rdf:datatype="">-0.85</polarity>
+	</rdf:Description>
+
+	<rdf:Description rdf:about="">
+		<rdf:type rdf:resource="Human Input"/>
+		<text xmlns="">Covid</text>
+		<polarity xmlns="" rdf:datatype="">-0.85</polarity>
 	</rdf:Description>
 
 	<rdf:Description rdf:about="http://openmind.media.mit.edu/api/en/concept/cowardice">
@@ -31385,12 +31385,6 @@
 		<rdf:type rdf:resource="http://sentic.net/api/concept"/>
 		<text xmlns="http://sentic.net/api/">titillation</text>
 		<polarity xmlns="http://sentic.net/api/" rdf:datatype="http://www.w3.org/2001/XMLSchema#float">+0.326</polarity>
-	</rdf:Description>
-
-	<rdf:Description rdf:about="http://openmind.media.mit.edu/api/en/concept/to">
-		<rdf:type rdf:resource="http://sentic.net/api/concept"/>
-		<text xmlns="http://sentic.net/api/">to</text>
-		<polarity xmlns="http://sentic.net/api/" rdf:datatype="http://www.w3.org/2001/XMLSchema#float">+0.408</polarity>
 	</rdf:Description>
 
 	<rdf:Description rdf:about="http://openmind.media.mit.edu/api/en/concept/to%20be">
